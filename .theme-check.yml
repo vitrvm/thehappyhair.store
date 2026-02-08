@@ -1,4 +1,42 @@
+# Theme Check configuration
+# https://github.com/Shopify/theme-tools/tree/main/packages/theme-check-common
+
+# Extends the default recommended checks
+extends: :theme-app-extension
+
+# Ignore non-theme files
+ignore:
+  - node_modules/**
+  - zz_db_files/**
+
+# Check customizations
 MatchingTranslations:
   enabled: false
-TemplateLength:
-  enabled: false
+
+RemoteAsset:
+  enabled: true
+  severity: suggestion
+
+ImgWidthAndHeight:
+  enabled: true
+  severity: suggestion
+
+DeprecatedTags:
+  enabled: true
+  severity: error
+
+UnusedAssign:
+  enabled: true
+  severity: warning
+
+MissingTemplate:
+  enabled: true
+  severity: error
+
+RequiredLayoutThemeObject:
+  enabled: true
+  severity: error
+
+ValidHTMLTranslation:
+  enabled: true
+  severity: error

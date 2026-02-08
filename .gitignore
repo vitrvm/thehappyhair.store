@@ -1,14 +1,36 @@
-# OS generated files #
-######################
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-.shopify
+# Shopify CLI-generated files and folders
+.shopify/
+.well-known/
+.env
 
-# IDE generated files #
-#####################
-.env.custom
+# Dependencies and build artifacts
+node_modules/
+yarn.lock
+package-lock.json
+dist/
+build/
+assets/bundle.js
+assets/bundle.css
+assets/bundle.js.map
+assets/bundle.css.map
+
+# Operating system and editor-specific files
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Logs and temporary files
+.log
+npm-debug.log
+.jekyll-cache/
+
+# Theme-specific temporary files
+*.zip
+*.zip.liquid
+
+# Development files
+shopify.theme.toml
+README.md
+TODO.md
+zz_db_files/
+secrets.env

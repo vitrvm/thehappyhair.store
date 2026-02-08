@@ -1,0 +1,19 @@
+# Store configuration — managed via Shopify Admin, never pushed from Git
+config/settings_data.json
+config/markets.json
+templates/*.json
+templates/customers/*.json
+sections/header-group.json
+sections/footer-group.json
+# CI/CD and development files
+.github/
+.vscode/
+.gitignore
+.theme-check.yml
+.shopifyignore
+# Documentation
+*.md
+LICENSE
+# Development data
+zz_db_files/
+secrets.env
