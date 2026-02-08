@@ -1,0 +1,81 @@
+{%- comment -%}
+  Custom JSON-LD: Organization
+  Enhanced Organization schema that fixes bugs in the default Dawn implementation.
+
+  Fixes:
+  - Filters empty social links from sameAs array (Dawn outputs all 9 regardless)
+  - Uses request.origin for url (Dawn incorrectly appends page.url)
+  - Adds @id for cross-referencing from other schemas
+  - Adds description, contactPoint, areaServed
+
+  Coexists with the existing Organization schema in sections/header.liquid.
+  Google merges multiple Organization schemas on the same page.
+{%- endcomment -%}
+
+{%- liquid
+  assign social_links = ''
+  if settings.social_facebook_link != blank
+    assign social_links = social_links | append: ',' | append: settings.social_facebook_link | append: '|||'
+  endif
+  if settings.social_instagram_link != blank
+    assign social_links = social_links | append: ',' | append: settings.social_instagram_link | append: '|||'
+  endif
+  if settings.social_youtube_link != blank
+    assign social_links = social_links | append: ',' | append: settings.social_youtube_link | append: '|||'
+  endif
+  if settings.social_tiktok_link != blank
+    assign social_links = social_links | append: ',' | append: settings.social_tiktok_link | append: '|||'
+  endif
+  if settings.social_twitter_link != blank
+    assign social_links = social_links | append: ',' | append: settings.social_twitter_link | append: '|||'
+  endif
+  if settings.social_snapchat_link != blank
+    assign social_links = social_links | append: ',' | append: settings.social_snapchat_link | append: '|||'
+  endif
+  if settings.social_pinterest_link != blank
+    assign social_links = social_links | append: ',' | append: settings.social_pinterest_link | append: '|||'
+  endif
+  if settings.social_tumblr_link != blank
+    assign social_links = social_links | append: ',' | append: settings.social_tumblr_link | append: '|||'
+  endif
+  if settings.social_vimeo_link != blank
+    assign social_links = social_links | append: ',' | append: settings.social_vimeo_link | append: '|||'
+  endif
+  assign social_links = social_links | remove_first: ','
+  assign social_links_array = social_links | split: '|||,'
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": {{ request.origin | append: '/#organization' | json }},
+  "name": {{ shop.name | json }},
+  "url": {{ request.origin | json }},
+  {%- if shop.description != blank -%}
+    "description": {{ shop.description | json }},
+  {%- endif -%}
+  {%- if settings.logo -%}
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ settings.logo | image_url: width: 500 | prepend: 'https:' | json }},
+      "width": 500
+    },
+  {%- endif -%}
+  {%- if social_links != blank -%}
+    "sameAs": [
+      {%- for link in social_links_array -%}
+        {{- link | remove: '|||' | json -}}
+        {%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ],
+  {%- endif -%}
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "email": {{ shop.email | json }},
+    "availableLanguage": "Spanish"
+  },
+  "areaServed": "ES"
+}
+</script>

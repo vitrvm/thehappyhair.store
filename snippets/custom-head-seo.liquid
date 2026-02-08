@@ -1,0 +1,37 @@
+{%- comment -%}
+  Custom Head SEO — Master Router
+  Renders structured data (JSON-LD) snippets based on the current page type.
+
+  This snippet is rendered from layout/theme.liquid after {% render 'meta-tags' %}.
+  All schema logic lives in custom-jsonld-*.liquid sub-snippets.
+
+  Dawn upgrade note: If upgrading Dawn, re-add this render tag in theme.liquid:
+    {% render 'custom-head-seo' %}
+{%- endcomment -%}
+
+{%- comment -%} Global schemas — rendered on every page {%- endcomment -%}
+{%- render 'custom-jsonld-organization' -%}
+{%- render 'custom-jsonld-breadcrumbs' -%}
+
+{%- comment -%} Page-type-specific schemas {%- endcomment -%}
+{%- case request.page_type -%}
+  {%- when 'product' -%}
+    {%- render 'custom-jsonld-product', product: product -%}
+
+  {%- when 'collection' -%}
+    {%- render 'custom-jsonld-collection', collection: collection -%}
+
+  {%- when 'article' -%}
+    {%- render 'custom-jsonld-article', article: article -%}
+    {%- if article.tags contains 'faq' -%}
+      {%- render 'custom-jsonld-faq', article: article -%}
+    {%- endif -%}
+    {%- if article.tags contains 'howto' -%}
+      {%- render 'custom-jsonld-howto', article: article -%}
+    {%- endif -%}
+
+  {%- when 'page' -%}
+    {%- if template.suffix == 'faq' -%}
+      {%- render 'custom-jsonld-faq' -%}
+    {%- endif -%}
+{%- endcase -%}

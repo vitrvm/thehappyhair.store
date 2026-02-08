@@ -1,0 +1,104 @@
+{%- comment -%}
+  Custom JSON-LD: BreadcrumbList
+  Generates breadcrumb structured data based on the current page type.
+
+  Breadcrumb paths:
+  - Homepage: no output (root page)
+  - Collection: Home → Collection Title
+  - Product: Home → First Collection → Product Title
+  - Article: Home → Blog Title → Article Title
+  - Page: Home → Page Title
+  - Search: Home → Search Results
+  - Cart: Home → Cart
+{%- endcomment -%}
+
+{%- unless request.page_type == 'index' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": {{ 'general.breadcrumbs.home' | t | default: 'Home' | json }},
+      "item": {{ request.origin | json }}
+    }
+
+    {%- case request.page_type -%}
+
+      {%- when 'collection' -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ collection.title | json }},
+          "item": {{ request.origin | append: collection.url | json }}
+        }
+
+      {%- when 'product' -%}
+        {%- if product.collections.size > 0 -%}
+          {%- assign primary_collection = product.collections.first -%}
+          ,{
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ primary_collection.title | json }},
+            "item": {{ request.origin | append: primary_collection.url | json }}
+          }
+          ,{
+            "@type": "ListItem",
+            "position": 3,
+            "name": {{ product.title | json }},
+            "item": {{ request.origin | append: product.url | json }}
+          }
+        {%- else -%}
+          ,{
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ product.title | json }},
+            "item": {{ request.origin | append: product.url | json }}
+          }
+        {%- endif -%}
+
+      {%- when 'article' -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ blog.title | json }},
+          "item": {{ request.origin | append: blog.url | json }}
+        }
+        ,{
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ article.title | json }},
+          "item": {{ request.origin | append: article.url | json }}
+        }
+
+      {%- when 'page' -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ page.title | json }},
+          "item": {{ request.origin | append: page.url | json }}
+        }
+
+      {%- when 'search' -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ 'general.search.title' | t | default: 'Search' | json }},
+          "item": {{ request.origin | append: routes.search_url | json }}
+        }
+
+      {%- when 'cart' -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ 'sections.cart.title' | t | default: 'Cart' | json }},
+          "item": {{ request.origin | append: routes.cart_url | json }}
+        }
+
+    {%- endcase -%}
+  ]
+}
+</script>
+{%- endunless -%}

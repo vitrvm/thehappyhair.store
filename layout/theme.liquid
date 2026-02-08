@@ -1,6 +1,7 @@
 <!doctype html>
 <html class="js" lang="{{ request.locale.iso_code }}">
   <head>
+    <meta name="google-site-verification" content="91oI2jsMdK-7vQz13dl2Dyj767rA1YxkO33QQmKLwS4" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -27,6 +28,9 @@
     {% endif %}
 
     {% render 'meta-tags' %}
+
+    {%- comment -%} Custom SEO code — Do not remove or edit this line. {%- endcomment -%}
+    {% render 'custom-head-seo' %}
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
