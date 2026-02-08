@@ -1,36 +1,24 @@
-# Shopify CLI-generated files and folders
+# Shopify CLI
 .shopify/
 .well-known/
+
+# Environment / secrets
 .env
+.env.*
+secrets.env
 
-# Dependencies and build artifacts
-node_modules/
-yarn.lock
-package-lock.json
-dist/
-build/
-assets/bundle.js
-assets/bundle.css
-assets/bundle.js.map
-assets/bundle.css.map
-
-# Operating system and editor-specific files
+# OS files
 .DS_Store
 Thumbs.db
-.vscode/
 
-# Logs and temporary files
-.log
-npm-debug.log
-.jekyll-cache/
+# Editor / IDE
+.idea/
+*~
+*.swp
 
-# Theme-specific temporary files
+# Logs
+*.log
+
+# Theme exports
 *.zip
 *.zip.liquid
-
-# Development files
-shopify.theme.toml
-README.md
-TODO.md
-zz_db_files/
-secrets.env

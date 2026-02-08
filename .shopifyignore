@@ -11,6 +11,7 @@ sections/footer-group.json
 .gitignore
 .theme-check.yml
 .shopifyignore
+docs/
 # Documentation
 *.md
 LICENSE
