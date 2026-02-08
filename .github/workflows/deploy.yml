@@ -1,0 +1,50 @@
+name: Deploy Theme
+on:
+  push:
+    branches: [main]
+# Prevent concurrent deploys
+concurrency:
+  group: shopify-deploy
+  cancel-in-progress: false
+jobs:
+  # Run theme check before deploying
+  theme-check:
+    name: Pre-deploy Theme Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli @shopify/theme
+      - name: Run Theme Check
+        run: shopify theme check --fail-level error
+  deploy:
+    name: Deploy to Shopify
+    needs: theme-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli @shopify/theme
+      - name: Deploy theme
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          SHOPIFY_FLAG_STORE: ${{ secrets.SHOPIFY_FLAG_STORE }}
+        run: |
+          shopify theme push \
+            --theme "${{ vars.SHOPIFY_THEME_ID }}" \
+            --nodelete \
+            --json
+            
