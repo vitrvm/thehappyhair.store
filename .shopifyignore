@@ -6,15 +6,15 @@ templates/customers/*.json
 sections/header-group.json
 sections/footer-group.json
 # CI/CD and development files
-.github/
-.vscode/
+.github/*
+.vscode/*
 .gitignore
 .theme-check.yml
 .shopifyignore
-docs/
+docs/*
 # Documentation
 *.md
 LICENSE
 # Development data
-zz_db_files/
+zz_db_files/*
 secrets.env
