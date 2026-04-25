@@ -46,5 +46,6 @@ jobs:
             --theme "${{ vars.SHOPIFY_THEME_ID }}" \
             --nodelete \
             --allow-live \
+            --force \
             --json
             
